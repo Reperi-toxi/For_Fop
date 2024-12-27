@@ -45,7 +45,7 @@ public class KotlinLikeInterpreter {
 
         // Example Kotlin-like program: Calculate and print the sum of 10 and 20
         String program = """
-            val sum = 10 + 22
+            val sum = 15 + 22
             println(sum)
         """;
 
