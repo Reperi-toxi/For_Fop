@@ -1,6 +1,5 @@
 import java.util.*;
-
-public class KotlinLikeInterpreter {
+public class KotlinInterpreter {
     private final Map<String, Integer> variables = new HashMap<>(); // Variable storage
 
     public void eval(String code) {
@@ -22,18 +21,39 @@ public class KotlinLikeInterpreter {
     }
 
     private void handleAssignment(String line) {
-        // Check for Kotlin-like variable declaration (val/var)
         if (line.startsWith("val") || line.startsWith("var")) {
             line = line.substring(3).trim(); // Remove 'val' or 'var' part
         }
 
         String[] parts = line.split("=");
         String varName = parts[0].trim();
-        String expression = parts[1].trim();
-        String[] numbers = expression.split("\\+");
-        int value = Integer.parseInt(numbers[0].trim()) + Integer.parseInt(numbers[1].trim());
+        int value = getValue(parts);
+        // More operators can be added here
+
         variables.put(varName, value);
     }
+
+    private static int getValue(String[] parts) {
+        String expression = parts[1].trim();
+
+        // Handling addition or subtraction
+        int value = 0;
+        if (expression.contains("+")) {
+            String[] numbers = expression.split("\\+");
+            value = Integer.parseInt(numbers[0].trim()) + Integer.parseInt(numbers[1].trim());
+        } else if (expression.contains("-")) {
+            String[] numbers = expression.split("-");
+            value = Integer.parseInt(numbers[0].trim()) - Integer.parseInt(numbers[1].trim());
+        } else if (expression.contains("*")) {
+            String[] numbers = expression.split("\\*");
+            value = Integer.parseInt(numbers[0].trim()) * Integer.parseInt(numbers[1].trim());
+        } else if (expression.contains("/")) {
+            String[] numbers = expression.split("/");
+            value = Integer.parseInt(numbers[0].trim()) / Integer.parseInt(numbers[1].trim());
+        }
+        return value;
+    }
+
 
     private void handlePrint(String line) {
         String varName = line.substring(line.indexOf('(') + 1, line.indexOf(')')).trim();
@@ -41,14 +61,22 @@ public class KotlinLikeInterpreter {
     }
 
     public static void main(String[] args) {
-        KotlinLikeInterpreter interpreter = new KotlinLikeInterpreter();
+        KotlinInterpreter interpreter = new KotlinInterpreter();
 
         // Example Kotlin-like program: Calculate and print the sum of 10 and 20
         String program = """
-            val sum = 15 + 22
+            val sum = 15 + 45
+            val sub = 45 - 15
+            val multi = 6*6
+            val divs = 45/15
             println(sum)
+            println(sub)
+            println(multi)
+            println(divs)
         """;
 
         interpreter.eval(program);
     }
 }
+
+
