@@ -27,33 +27,10 @@ public class KotlinInterpreter {
 
         String[] parts = line.split("=");
         String varName = parts[0].trim();
-        int value = getValue(parts);
-        // More operators can be added here
+        int value = MathExpressions.getValue(parts); // Calls the getValue static method from MathExpressions class
 
         variables.put(varName, value);
     }
-
-    private static int getValue(String[] parts) {
-        String expression = parts[1].trim();
-
-        // Handling addition or subtraction
-        int value = 0;
-        if (expression.contains("+")) {
-            String[] numbers = expression.split("\\+");
-            value = Integer.parseInt(numbers[0].trim()) + Integer.parseInt(numbers[1].trim());
-        } else if (expression.contains("-")) {
-            String[] numbers = expression.split("-");
-            value = Integer.parseInt(numbers[0].trim()) - Integer.parseInt(numbers[1].trim());
-        } else if (expression.contains("*")) {
-            String[] numbers = expression.split("\\*");
-            value = Integer.parseInt(numbers[0].trim()) * Integer.parseInt(numbers[1].trim());
-        } else if (expression.contains("/")) {
-            String[] numbers = expression.split("/");
-            value = Integer.parseInt(numbers[0].trim()) / Integer.parseInt(numbers[1].trim());
-        }
-        return value;
-    }
-
 
     private void handlePrint(String line) {
         String varName = line.substring(line.indexOf('(') + 1, line.indexOf(')')).trim();
@@ -63,7 +40,7 @@ public class KotlinInterpreter {
     public static void main(String[] args) {
         KotlinInterpreter interpreter = new KotlinInterpreter();
 
-        // Example Kotlin-like program: Calculate and print the sum of 10 and 20
+        // Example of Kotlin program
         String program = """
             val sum = 15 + 45
             val sub = 45 - 15
@@ -78,5 +55,7 @@ public class KotlinInterpreter {
         interpreter.eval(program);
     }
 }
+
+
 
 
