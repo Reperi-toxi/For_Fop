@@ -16,7 +16,7 @@ public class KotlinInterpreter {
                 handlePrint(line);
             }
             else if (line.startsWith("if")) {
-                i = handleIf(lines, i); 
+                i = handleIf(lines, i); // Changed to return new index after processing block
             } else if (line.startsWith("while")) {
                 i = handleWhile(lines, i);
             }
@@ -122,19 +122,20 @@ public class KotlinInterpreter {
 
         String program = """
             val sub = 45 - 15
-            val multi = 6*6
+            var modulo = 40 % 7
+            val multi = 7*8
             val divs = 45/15
             var sum = 45 + 15
             println(sub)
-            if (multi > 30) {
-                println(multi)
+            if (modulo > 3) {
+                println(modulo)
             }
             if (divs > 5) {
                 println(divs)  //this will not execute, doesn't meet the condition
             }
-            while(sum < 64) {
-                sum = sum + 1
-                println(sum)
+            while(multi < sum) {  //it handles variables on both sides now
+                multi = multi + 3
+                println(multi)
             }
         """;
 
