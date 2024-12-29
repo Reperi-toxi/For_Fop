@@ -16,7 +16,9 @@ public class KotlinInterpreter {
                 handlePrint(line);
             }
             else if (line.startsWith("if")) {
-                i = handleIf(lines, i); // Changed to return new index after processing block
+                i = handleIf(lines, i); 
+            } else if (line.startsWith("while")) {
+                i = handleWhile(lines, i);
             }
         }
     }
@@ -28,7 +30,7 @@ public class KotlinInterpreter {
 
         String[] parts = line.split("=");
         String varName = parts[0].trim();
-        int value = MathExpressions.getValue(parts);
+        int value = MathExpressions.getValue(parts, variables);
 
         variables.put(varName, value);
     }
@@ -77,16 +79,52 @@ public class KotlinInterpreter {
 
         return closeBraceIndex; // Return the index after the block
     }
+    private int handleWhile(List<String> lines, int currentIndex) {
+        String line = lines.get(currentIndex);
+        String condition = line.substring(line.indexOf('(') + 1, line.indexOf(')')).trim();
+        WhileLoop whileLoop = new WhileLoop(condition);
+
+        int openBraceIndex = currentIndex;
+        while (!lines.get(openBraceIndex).contains("{")) {
+            openBraceIndex++;
+        }
+
+        int closeBraceIndex = openBraceIndex;
+        int braceCount = 1;
+
+        while (braceCount > 0 && closeBraceIndex < lines.size() - 1) {
+            closeBraceIndex++;
+            String currentLine = lines.get(closeBraceIndex).trim();
+            if (currentLine.contains("{")) braceCount++;
+            if (currentLine.contains("}")) braceCount--;
+        }
+
+        while (whileLoop.evaluateCondition(variables)) {
+            for (int i = openBraceIndex + 1; i < closeBraceIndex; i++) {
+                String blockLine = lines.get(i).trim();
+                if (!blockLine.isEmpty() && !blockLine.equals("{") && !blockLine.equals("}")) {
+                    if (blockLine.contains("=")) {
+                        handleAssignment(blockLine);
+                    }
+                    else if (blockLine.startsWith("println")) {
+                        handlePrint(blockLine);
+                    }
+                }
+            }
+        }
+
+        return closeBraceIndex;
+    }
+
 
     public static void main(String[] args) {
         KotlinInterpreter interpreter = new KotlinInterpreter();
 
         String program = """
-            val sum = 15 + 45
             val sub = 45 - 15
             val multi = 6*6
             val divs = 45/15
-            println(sum)
+            var sum = 45 + 15
             println(sub)
             if (multi > 30) {
                 println(multi)
@@ -94,8 +132,14 @@ public class KotlinInterpreter {
             if (divs > 5) {
                 println(divs)  //this will not execute, doesn't meet the condition
             }
+            while(sum < 64) {
+                sum = sum + 1
+                println(sum)
+            }
         """;
 
         interpreter.eval(program);
     }
 }
+
+
