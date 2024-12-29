@@ -120,26 +120,34 @@ public class KotlinInterpreter {
     public static void main(String[] args) {
         KotlinInterpreter interpreter = new KotlinInterpreter();
 
-        String program = """
-            val sub = 45 - 15
-            var modulo = 40 % 7
-            val multi = 7*8
-            val divs = 45/15
-            var sum = 45 + 15
-            println(sub)
-            if (modulo > 3) {
-                println(modulo)
-            }
-            if (divs > 5) {
-                println(divs)  //this will not execute, doesn't meet the condition
-            }
-            while(multi < sum) {  //it handles variables on both sides now
-                multi = multi + 3
-                println(multi)
-            }
+        String sumOf = """
+            var number = 5
+            var sum = 0
+                
+             while (number > 0) {
+              sum = sum + number
+              number = number - 1
+             }
+                
+             println(sum)
         """;
 
-        interpreter.eval(program);
+
+
+        String factorialization = """
+           var number1 = 5
+           var factorial = 1
+                
+             while (number1 > 0) {
+               factorial = number1 * factorial
+               number1 = number1 - 1
+             }
+             
+             println(factorial)
+                """;
+
+        interpreter.eval(sumOf);
+        interpreter.eval(factorialization);
     }
 }
 
