@@ -153,10 +153,41 @@ public class KotlinInterpreter {
         
              println(factorial)
         """;
+        String GCD = """
+                  val num1 = 48
+                  val num2 = 18
+                  
+                  var a = num1
+                  var b = num2
+                              
+                  while (b > 0) {
+                     val temp = b
+                     b = a % b
+                     a = temp
+                    }
+                
+                        println(a)
+                """;
+
+        String reverseNumber = """          
+                        var n = 1234
+                        var reversed = 0
+                
+                        while (n > 0) {
+                            val digit = n % 10
+                            reversed = reversed * 10
+                            reversed = reversed + digit
+                            n = n / 10
+                        }
+                
+                        println(reversed)
+                """;
 
         interpreter.eval(sumOf);
         interpreter.eval(factorialization);
         interpreter.eval(sumOfDigits);
+        interpreter.eval(GCD);
+        interpreter.eval(reverseNumber);
     }
 }
 
