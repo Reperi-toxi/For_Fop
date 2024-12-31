@@ -1,43 +1,51 @@
 import java.util.Map;
-public class MathExpressions {
-    // Method to evaluate a mathematical expression
-    private static int evaluateExpression(String expression, Map<String, Integer> variables) {
-        int value = 0;
-        if (expression.contains("+")) {
-            String[] operands = expression.split("\\+");
-            value = getOperandValue(operands[0].trim(), variables) + getOperandValue(operands[1].trim(), variables);
-        } else if (expression.contains("-")) {
-            String[] operands = expression.split("-");
-            value = getOperandValue(operands[0].trim(), variables) - getOperandValue(operands[1].trim(), variables);
-        } else if (expression.contains("*")) {
-            String[] operands = expression.split("\\*");
-            value = getOperandValue(operands[0].trim(), variables) * getOperandValue(operands[1].trim(), variables);
-        } else if (expression.contains("/")) {
-            String[] operands = expression.split("/");
-            value = getOperandValue(operands[0].trim(), variables) / getOperandValue(operands[1].trim(), variables);
-        } else if (expression.contains("%")) {
-            String[] operands = expression.split("%");
-            value = getOperandValue(operands[0].trim(), variables) % getOperandValue(operands[1].trim(), variables);
-        } else {
-            // Handle single value (might be a variable or number)
-            value = getOperandValue(expression.trim(), variables);
-        }
-        return value;
-    }
-
-    // Helper method to get value of an operand (either variable or number)
-    private static int getOperandValue(String operand, Map<String, Integer> variables) {
-        // If it's in our variables map, return the variable's value
-        if (variables.containsKey(operand)) {
-            return variables.get(operand);
-        }
-        // Otherwise, try to parse it as a number
-        return Integer.parseInt(operand);
-    }
-
-    // Method to retrieve the value from parts
+class MathExpressions {
     public static int getValue(String[] parts, Map<String, Integer> variables) {
         String expression = parts[1].trim();
         return evaluateExpression(expression, variables);
+    }
+
+    private static int evaluateExpression(String expression, Map<String, Integer> variables) {
+        // Support for parentheses
+        if (expression.contains("(") && expression.contains(")")) {
+            int start = expression.lastIndexOf("(");
+            int end = expression.indexOf(")", start);
+            String subExpr = expression.substring(start + 1, end);
+            int result = evaluateExpression(subExpr, variables);
+            String newExpr = expression.substring(0, start) + result + expression.substring(end + 1);
+            return evaluateExpression(newExpr, variables);
+        }
+
+        // Support for basic operations
+        if (expression.contains("+")) {
+            String[] operands = expression.split("\\+");
+            return getOperandValue(operands[0].trim(), variables) +
+                    getOperandValue(operands[1].trim(), variables);
+        } else if (expression.contains("-")) {
+            String[] operands = expression.split("-");
+            return getOperandValue(operands[0].trim(), variables) -
+                    getOperandValue(operands[1].trim(), variables);
+        } else if (expression.contains("*")) {
+            String[] operands = expression.split("\\*");
+            return getOperandValue(operands[0].trim(), variables) *
+                    getOperandValue(operands[1].trim(), variables);
+        } else if (expression.contains("/")) {
+            String[] operands = expression.split("/");
+            return getOperandValue(operands[0].trim(), variables) /
+                    getOperandValue(operands[1].trim(), variables);
+        } else if (expression.contains("%")) {
+            String[] operands = expression.split("%");
+            return getOperandValue(operands[0].trim(), variables) %
+                    getOperandValue(operands[1].trim(), variables);
+        }
+
+        return getOperandValue(expression.trim(), variables);
+    }
+
+    private static int getOperandValue(String operand, Map<String, Integer> variables) {
+        if (variables.containsKey(operand)) {
+            return variables.get(operand);
+        }
+        return Integer.parseInt(operand);
     }
 }
