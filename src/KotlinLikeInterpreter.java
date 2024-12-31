@@ -123,31 +123,40 @@ public class KotlinInterpreter {
         String sumOf = """
             var number = 5
             var sum = 0
-                
+        
              while (number > 0) {
               sum = sum + number
               number = number - 1
              }
-                
+        
              println(sum)
         """;
-
-
+        String sumOfDigits = """
+            var num = 12345
+            var sum = 0
+        
+            while (num > 0) {
+                sum = sum + (num % 10)
+                num = num / 10
+            }
+        
+            println(sum)
+        """;
 
         String factorialization = """
            var number1 = 5
            var factorial = 1
-                
              while (number1 > 0) {
                factorial = number1 * factorial
                number1 = number1 - 1
              }
-             
+        
              println(factorial)
-                """;
+        """;
 
         interpreter.eval(sumOf);
         interpreter.eval(factorialization);
+        interpreter.eval(sumOfDigits);
     }
 }
 
