@@ -184,12 +184,94 @@ public class KotlinInterpreter {
                 println(reversed)
                 """;
 
+        String primeChecker = """
+        val number = 13
+        var isPrime = 1
+        var i = 2
+        var trueInstance = 1
+        while (i < number) {
+        val temp = number % i
+        isPrime = isPrime * temp
+        i = i+1
+        }
+        if(isPrime > 0) {
+        println(trueInstance)
+        }
+        if(isPrime < 1) {
+        println(isPrime)
+        }                         // '1' for true, '0' for false
+        
+        
+        """;
+String largestDigit = """
+val number = 957432
+var largestDigit = 0
+var tempNumber = number
+
+while (tempNumber > 0) {
+    val digit = tempNumber % 10
+    if (digit > largestDigit) {
+        largestDigit = digit
+    }
+    tempNumber = tempNumber / 10
+}
+println(largestDigit)
+""";
+String palindromeChecker = """
+val number = 72627
+var tempNumber = number
+var reversedNumber = 0
+var originalNumber = number
+var isPalindrome = 1
+
+
+while (tempNumber > 0) {
+    val digit = tempNumber % 10
+    reversedNumber = (reversedNumber * 10) + digit
+    tempNumber = tempNumber / 10
+}
+
+// if the number is a palindrome the output will be '1'
+if (originalNumber == reversedNumber) {
+    println(isPalindrome)
+}
+""";
+
+String multiTable = """
+val number = 5
+var i = 1
+
+while (i <= 10) {
+    val result = number * i
+    println(result)
+    i = i + 1
+}
+""";
+String nthFibonacci = """
+        val n = 11
+        var a = 0
+        var b = 1
+        var i = 2
+        while(i <= n) {
+          var temp = a + b
+          a = b
+          b = temp
+          i = i + 1
+       }
+       println(a)
+       """;
+
 
         interpreter.eval(sumOf);
         interpreter.eval(factorialization);
         interpreter.eval(sumOfDigits);
         interpreter.eval(GCD);
         interpreter.eval(reverseNumber);
+        interpreter.eval(primeChecker);
+        interpreter.eval(largestDigit);
+        interpreter.eval(palindromeChecker);
+        interpreter.eval(multiTable);
+        interpreter.eval(nthFibonacci);
 
 
     }
