@@ -42,10 +42,11 @@ class MathExpressions {
         return getOperandValue(expression.trim(), variables);
     }
 
-    private static int getOperandValue(String operand, Map<String, Integer> variables) {
+    static int getOperandValue(String operand, Map<String, Integer> variables) {
         if (variables.containsKey(operand)) {
             return variables.get(operand);
         }
         return Integer.parseInt(operand);
     }
 }
+
