@@ -9,16 +9,18 @@ public class KotlinInterpreter {
             String line = lines.get(i).trim();
             if (line.isEmpty()) continue;
 
-            if (line.contains("=")) {
+            // Check for if statement BEFORE checking for =
+            if (line.startsWith("if")) {
+                i = handleIf(lines, i);
+            }
+            else if (line.startsWith("while")) {
+                i = handleWhile(lines, i);
+            }
+            else if (line.contains("=")) {
                 handleAssignment(line);
             }
             else if (line.startsWith("println")) {
                 handlePrint(line);
-            }
-            else if (line.startsWith("if")) {
-                i = handleIf(lines, i); // Changed to return new index after processing block
-            } else if (line.startsWith("while")) {
-                i = handleWhile(lines, i);
             }
         }
     }
@@ -119,7 +121,6 @@ public class KotlinInterpreter {
 
     public static void main(String[] args) {
         KotlinInterpreter interpreter = new KotlinInterpreter();
-
         String sumOf = """
             var number = 5
             var sum = 0
@@ -146,49 +147,53 @@ public class KotlinInterpreter {
         String factorialization = """
            var number1 = 5
            var factorial = 1
-             while (number1 > 0) {
-               factorial = number1 * factorial
-               number1 = number1 - 1
-             }
+           while (number1 > 0) {
+              factorial = number1 * factorial
+              number1 = number1 - 1
+           }
         
              println(factorial)
         """;
         String GCD = """
-                  val num1 = 48
-                  val num2 = 18
+                val num1 = 48
+                val num2 = 18
                   
-                  var a = num1
-                  var b = num2
+                var a = num1
+                var b = num2
                               
-                  while (b > 0) {
-                     val temp = b
-                     b = a % b
-                     a = temp
-                    }
+                while (b > 0) {
+                   val temp = b
+                   b = a % b
+                   a = temp
+                }
                 
-                        println(a)
+                println(a)
                 """;
 
         String reverseNumber = """          
-                        var n = 1234
-                        var reversed = 0
+                var n = 1234
+                var reversed = 0
                 
-                        while (n > 0) {
-                            val digit = n % 10
-                            reversed = reversed * 10
-                            reversed = reversed + digit
-                            n = n / 10
-                        }
+                while (n > 0) {
+                   val digit = n % 10
+                   reversed = reversed * 10
+                   reversed = reversed + digit
+                   n = n / 10
+                }
                 
-                        println(reversed)
+                println(reversed)
                 """;
+
 
         interpreter.eval(sumOf);
         interpreter.eval(factorialization);
         interpreter.eval(sumOfDigits);
         interpreter.eval(GCD);
         interpreter.eval(reverseNumber);
+
+
     }
 }
+
 
 
